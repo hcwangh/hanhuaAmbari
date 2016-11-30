@@ -1,0 +1,186 @@
+{{!
+* Licensed to the Apache Software Foundation (ASF) under one
+* or more contributor license agreements.  See the NOTICE file
+* distributed with this work for additional information
+* regarding copyright ownership.  The ASF licenses this file
+* to you under the Apache License, Version 2.0 (the
+* "License"); you may not use this file except in compliance
+* with the License.  You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+}}
+
+<div class="panel panel-default panel-scheduler">
+  <div class="panel-heading">
+    <div class="panel-title">
+      调度
+      {{queue-badge q=scheduler class="pull-right"}}
+    </div>
+  </div>
+  <div class="panel-body">
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        {{tooltip-label
+          label='应用最大数量'
+          class="col-xs-5 control-label"
+          message='对于整个群集,可以在任何时间点运行或挂起应用的最大数量'
+        }}
+        {{#if isOperator}}
+        <div class="col-xs-6 control-value">
+          {{int-input value=scheduler.maximum_applications maxlength=15 class="input-sm input-int"}}
+          {{#if schedulerDirtyFilelds.maximum_applications}}
+            <div class="btn-group btn-group-xs" >
+                <a {{action 'rollbackProp' 'maximum_applications' scheduler}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+            </div>
+          {{/if}}
+        </div>
+        {{else}}
+        <div class="col-xs-6">
+          <p class="form-control-static">{{scheduler.maximum_applications}}</p>
+        </div>
+        {{/if}}
+      </div>
+      <div class="form-group">
+        {{tooltip-label
+          label=' AM 资源最大值'
+          class="col-xs-5 control-label"
+          message='对整个集群,可以由AM在任何时间点被利用的总容量的最大百分比.'
+        }}
+        {{#if isOperator}}
+        <div class="col-xs-6 control-value input-percent-wrap">
+          <div>
+            <div class="input-group input-percent">
+              {{int-input value=scheduler.maximum_am_resource_percent class="input-sm" maxVal=100}}
+              <span class="input-group-addon">%</span>
+            </div>
+          </div>
+          {{#if schedulerDirtyFilelds.maximum_am_resource_percent}}
+            <div class="btn-group btn-group-xs" >
+                <a {{action 'rollbackProp' 'maximum_am_resource_percent' scheduler}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+            </div>
+          {{/if}}
+        </div>
+        {{else}}
+        <div class="col-xs-6">
+          {{#if scheduler.maximum_am_resource_percent}}
+            <p class="form-control-static">{{scheduler.maximum_am_resource_percent}} %</p>
+          {{else}}
+            <p class="form-control-static">-</p>
+          {{/if}}
+        </div>
+        {{/if}}
+      </div>
+      <div class="form-group">
+        {{tooltip-label
+          label='节点 Locality 延时'
+          class="col-xs-5 control-label"
+          message='调度器尝试调度一个rack-local container之前,最多跳过的调度机会数.'
+        }}
+        {{#if isOperator}}
+          <div class="col-xs-6 control-value">
+            {{int-input value=scheduler.node_locality_delay maxlength=10 class="input-sm input-int"}}
+            {{#if schedulerDirtyFilelds.node_locality_delay}}
+              <div class="btn-group btn-group-xs" >
+                  <a {{action 'rollbackProp' 'node_locality_delay' scheduler}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+              </div>
+            {{/if}}
+          </div>
+        {{else}}
+          <div class="col-xs-6">
+            {{#if scheduler.node_locality_delay}}
+              <p class="form-control-static">{{scheduler.node_locality_delay}} %</p>
+            {{else}}
+              <p class="form-control-static">-</p>
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+      {{#if isOperator}}
+          <div class="form-group">
+            {{tooltip-label
+              label='计算器'
+              class="col-xs-5 control-label"
+              message='由调度整个资源类型计算资源能力的方法.'
+            }}
+            <div class="col-xs-7 control-value">
+              {{expandable-input value=scheduler.resource_calculator class="input-sm form-control input-expand"}}
+              {{#if schedulerDirtyFilelds.resource_calculator}}
+                <div class="btn-group btn-group-xs" >
+                    <a {{action 'rollbackProp' 'resource_calculator' scheduler}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+                </div>
+              {{/if}}
+            </div>
+          </div>
+      {{/if}}
+      <div class="form-group">
+        {{tooltip-label
+          label='队列映射'
+          class="col-xs-5 control-label"
+          message='此配置指定用户或组非特异性队列的映射.可以映射单个用户或用户的到队列列表.语法：[ u或G]:[名]:[ queue_name ] [ ,next_mapping ] * .这里,u或G表示的映射是否为用户或组的值.名称指示用户名或组名.指定谁提交应用程序的用户,％使用者可以使用. queue_name表示其应用程序映射队列名称.以指定队列名称相同的用户名,％y用户可以使用.以指定队列名称相同的量,用户所属的初级组的名称,％ primary_group可以使用.'
+        }}
+        {{#if isOperator}}
+          <div class="col-xs-7 control-value">
+            {{expandable-input value=scheduler.queue_mappings class="input-sm form-control input-expand"}}
+            {{#if schedulerDirtyFilelds.queue_mappings}}
+              <div class="btn-group btn-group-xs" >
+                  <a {{action 'rollbackProp' 'queue_mappings' scheduler}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+              </div>
+            {{/if}}
+          </div>
+        {{else}}
+          <div class="col-xs-6">
+            {{#if scheduler.queue_mappings}}
+              <p class="form-control-static">{{scheduler.queue_mappings}}</p>
+            {{else}}
+              <p class="form-control-static">-</p>
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+      <div class="form-group">
+        {{tooltip-label
+          class="col-xs-5 control-label"
+          label='队列映射覆盖'
+          message='此功能用于指定用户指定的队列是否可以被覆盖.这是一个布尔值，默认值为false.'
+        }}
+          {{#if isOperator}}
+          <div class="col-xs-7 control-value input-percent-wrap">
+            <div>
+              <div class="btn-group btn-group-sm pull-right">
+                <a href="#" {{action 'toggleProperty' 'queue_mappings_override_enable' scheduler}} class="btn btn-default">
+                  <i {{bind-attr class=":fa scheduler.queue_mappings_override_enable:fa-check-square-o:fa-square-o"}}></i>
+                  {{#if scheduler.queue_mappings_override_enable}}
+                    启动
+                  {{else}}
+                    禁用
+                  {{/if}}
+                </a>
+              </div>
+            </div>
+            {{#if schedulerDirtyFilelds.queue_mappings_override_enable}}
+              <div class="btn-group btn-group-xs" >
+                <a {{action 'rollbackProp' 'queue_mappings_override_enable' scheduler}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+              </div>
+            {{/if}}
+          </div>
+          {{else}}
+          <div class="col-xs-6">
+            <p class="form-control-static">
+            {{#if scheduler.queue_mappings_override_enable}}
+              启动
+            {{else}}
+              禁用
+            {{/if}}
+            </p>
+          </div>
+          {{/if}}
+      </div>
+    </form>
+  </div>
+</div>

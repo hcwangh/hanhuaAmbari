@@ -1,0 +1,376 @@
+{{!
+* Licensed to the Apache Software Foundation (ASF) under one
+* or more contributor license agreements.  See the NOTICE file
+* distributed with this work for additional information
+* regarding copyright ownership.  The ASF licenses this file
+* to you under the Apache License, Version 2.0 (the
+* "License"); you may not use this file except in compliance
+* with the License.  You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+}}
+
+<div class="well-queue">
+  <div class="row queue-heading-row">
+    <div class="col-md-12">
+      <h3>
+        {{#if content.isNew}}
+          <div class="input-group col-md-8">
+            {{focus-input value=content.name length="250" class="form-control" classBinding="content.isValid::input-error" action="createQ" revert="delQ" placeholder="Enter Queue Name"}}
+            <span class="input-group-btn">
+              <button {{action "delQ" content target="controllers.queues"}} {{bind-attr class=":btn :btn-danger"}} type="button">取消</button>
+              <button {{action "createQ" content target="controllers.queues"}} {{bind-attr class=":btn :btn-success content.isValid::disabled"}} type="button">创建</button>
+            </span>
+          </div>
+        {{else}}
+          {{#unless isRenaming}}
+              {{content.name}}
+              {{#unless isRoot}}
+                {{#unless isNotOperator}}
+                  <small>
+                    <a href="#" {{action 'renameQ' 'ask'}}>
+                      <i class="fa fa-edit"></i>
+                    </a>
+                  </small>
+                  <small>
+                    {{confirm-delete action="delQ" param=content}}
+                  </small>
+                {{/unless}}
+              {{/unless}}
+            {{else}}
+            <div class="input-group col-md-8">
+              {{focus-input value=content.name length="250" class="form-control" action="renameQ" revert="renameQ" classBinding="content.isValid::input-error" placeholder="Enter Queue Name"}}
+              <span class="input-group-btn">
+                <button {{action 'renameQ' 'cancel'}} {{bind-attr class=":btn :btn-danger"}} type="button">取消</button>
+                <button {{action 'renameQ' 'rename'}} {{bind-attr class=":btn :btn-success content.isValid::disabled"}} type="button">重命名</button>
+              </span>
+            </div>
+          {{/unless}}
+        {{/if}}
+      </h3>
+      {{#each pathErrors}}
+        <p class="help-block red">{{this}}</p>
+      {{/each}}
+      <h4><small>{{content.path}}</small></h4>
+    </div>
+  </div>
+  <div class="row queue-capacity-row">
+    <div class="col-md-12">
+      {{total-capacity
+        currentQueue=content
+        allQueues=allQueues
+        allQueuesArranged=controllers.queues.arrangedContent
+        isOperator=isOperator
+        rollbackProp="rollbackProp"
+      }}
+    </div>
+  </div>
+  <div class="row queue-acl-row">
+    <div class="col-md-12 col-lg-6 queue-acl">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title">
+              访问控制和状态
+          </div>
+        </div>
+        {{#unless isRangerEnabledForYarn}}
+        <div class="panel-body">
+          <form class="form-horizontal form-acl" role="form">
+          <div class="form-group row">
+              {{tooltip-label
+                class="col-lg-4 col-xs-4 control-label"
+                label='状态'
+                message= '这个队列运行还是停止. <br/> 运行:可以接受应用程序 <br/> 停止: 不能接受应用程序'
+              }}
+              <div class="col-lg-6 col-md-6 col-sm-8 col-xs-7 control-value">
+                <div class="btn-group btn-group-xs" data-toggle="buttons" >
+                  <label  {{action 'setState' 'running'}} {{bind-attr class=":btn isRunning:btn-success:btn-default isRunning:active isNotOperator:disabled" }}>
+                    <input type="radio" name="options"> 运行
+                  </label>
+                  <label  {{action 'setState' 'stopped'}} {{bind-attr class=":btn isRunning:btn-default:btn-danger isRunning::active isNotOperator:disabled" }}>
+                    <input type="radio" name="options"> 停止
+                  </label>
+               </div>
+                {{#if queueDirtyFilelds.state}}
+                <div class="btn-group btn-group-xs" >
+                    <a {{action 'rollbackProp' 'state' content}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+                </div>
+                {{/if}}
+              </div>
+          </div>
+
+          {{#if isOperator}}
+
+            <div class="form-group row">
+              {{tooltip-label
+                class="col-lg-4 col-xs-4 control-label"
+                label='管理队列'
+                message='用户和获得授权在此队列中执行管理功能组的访问控制列表.'
+              }}
+              <div class="col-lg-6 col-md-6 col-sm-8 col-xs-7 control-value">
+                <div class="btn-group btn-group-xs" data-toggle="buttons">
+                  {{radio-button label="任何" selectionBinding="acl_administer_queue" value="*"}}
+                  {{radio-button label="自定义" selectionBinding="acl_administer_queue" value="custom"}}
+                </div>
+                {{#if queueDirtyFilelds.acl_administer_queue}}
+                <div class="btn-group btn-group-xs" >
+                    <a {{action 'rollbackProp' 'acl_administer_queue' content}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+                </div>
+                {{/if}}
+              </div>
+            </div>
+            {{#unless aaq_anyone}}
+              {{user-group-input ug=content.acl_administer_queue disabled=aaq_anyone}}
+            {{/unless}}
+
+            <div class="form-group row">
+              {{tooltip-label
+                class="col-lg-4 col-xs-4 control-label"
+                label='提交应用'
+                message='有授权的用户和组提交应用到此队列.'
+              }}
+              <div class="col-lg-6 col-md-6 col-sm-8 col-xs-7 control-value">
+                <div class="btn-group btn-group-xs" data-toggle="buttons">
+                  {{radio-button label="任何" selectionBinding="acl_submit_applications" value="*"}}
+                  {{radio-button label="自定义" selectionBinding="acl_submit_applications" value="custom"}}
+                </div>
+                {{#if queueDirtyFilelds.acl_submit_applications}}
+                <div class="btn-group btn-group-xs" >
+                    <a {{action 'rollbackProp' 'acl_submit_applications' content}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+                </div>
+                {{/if}}
+              </div>
+            </div>
+            {{#unless asa_anyone}}
+              {{user-group-input ug=content.acl_submit_applications disabled=asa_anyone}}
+            {{/unless}}
+
+          {{else}}
+            <div class="form-group">
+              {{tooltip-label
+                class="col-lg-4 col-xs-4 control-label"
+                label='管理队列'
+                message='用户和获得授权在此队列中执行管理功能组的访问控制列表.'
+              }}
+              <div class="col-lg-8 col-xs-8 control-value">
+               <p class="form-control-static">
+                {{escapeACL content.acl_administer_queue}}
+               </p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              {{tooltip-label
+                class="col-lg-4 col-xs-4 control-label"
+                label='提交应用程序'
+                message='用户和有授权组的访问控制列表提交申请到此队列.'
+              }}
+              <div class="col-lg-8 col-xs-8 control-value">
+               <p class="form-control-static">
+                {{escapeACL content.acl_submit_applications}}
+               </p>
+              </div>
+            </div>
+          {{/if}}
+          </form>
+        </div>
+        {{else}}
+          <div class="panel-body">
+              Permissions are managed by Ranger
+          </div>
+        {{/unless}}
+      </div>
+
+    </div>
+
+    <div class="col-md-12 col-lg-6 queue-resources">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title">
+            资源
+          </div>
+        </div>
+        <div class="panel-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              {{tooltip-label
+                class="col-xs-6 control-label"
+                label='用户应用数量'
+                message='一个用户的应用程序可以利用队列的配置的最小容量的上限数量.'
+              }}
+              {{#if isOperator}}
+                <div class="col-xs-6 control-value">
+                  {{int-input value=content.user_limit_factor maxlength=10 class="input-sm input-int" defaultVal=1 placeholder=1}}
+                  {{#if queueDirtyFilelds.user_limit_factor}}
+                  <div class="btn-group btn-group-xs" >
+                    <a {{action 'rollbackProp' 'user_limit_factor' content}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+                  </div>
+                  {{/if}}
+                </div>
+              {{else}}
+                <div class="col-xs-6">
+                  <p class="form-control-static">{{content.user_limit_factor}}</p>
+                </div>
+              {{/if}}
+            </div>
+            <div class="form-group">
+              {{tooltip-label
+                class="col-xs-6 control-label"
+                label='用户最小容量限制'
+                message='用户应用程序占用最小容量在所占队列容量的百分比.'
+              }}
+              {{#if isOperator}}
+                <div class="col-xs-6 control-value input-percent-wrap">
+                  <div>
+                    <div class="input-group input-percent">
+                      {{int-input value=content.minimum_user_limit_percent class="input-sm" maxVal=100 placeholder=100}}
+                      <span class="input-group-addon">%</span>
+                    </div>
+                  </div>
+                  {{#if queueDirtyFilelds.minimum_user_limit_percent}}
+                    <div class="btn-group btn-group-xs" >
+                        <a {{action 'rollbackProp' 'minimum_user_limit_percent' content}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+                    </div>
+                  {{/if}}
+                </div>
+              {{else}}
+                <div class="col-xs-6">
+                  {{#if content.minimum_user_limit_percent}}
+                    <p class="form-control-static">{{content.minimum_user_limit_percent}} %</p>
+                  {{else}}
+                    <p class="form-control-static">100</p>
+                  {{/if}}
+                </div>
+              {{/if}}
+            </div>
+            <div class="form-group">
+              {{tooltip-label
+                class="col-xs-6 control-label"
+                label='最大的应用'
+                message='指定队列中任何时候,可以被挂起的应用.'
+              }}
+              {{#if isOperator}}
+                <div class="col-xs-6 control-value">
+                  {{int-input placeholder="继承" maxlength=15 value=content.maximum_applications class="input-sm input-int"}}
+                  {{#if queueDirtyFilelds.maximum_applications}}
+                    <div class="btn-group btn-group-xs" >
+                      <a {{action 'rollbackProp' 'maximum_applications' content}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+                    </div>
+                  {{/if}}
+                </div>
+              {{else}}
+                <div class="col-xs-6">
+                {{#if content.maximum_applications}}
+                  <p class="form-control-static">{{content.maximum_applications}}</p>
+                {{else}}
+                  <p class="form-control-static">继承</p>
+                {{/if}}
+              </div>
+              {{/if}}
+            </div>
+            <div class="form-group">
+                {{tooltip-label
+                  class="col-xs-6 control-label"
+                  label='最大 AM 资源'
+                  message='指定队列中AM在任何时候所占用资源最大的百分比.'
+                }}
+                {{#if isOperator}}
+                <div class="col-xs-6 control-value input-percent-wrap">
+                  <div>
+                    <div class="input-group input-percent">
+                      {{int-input placeholder="继承" value=content.maximum_am_resource_percent class="input-sm" maxVal=100}}
+                      <span class="input-group-addon">%</span>
+                    </div>
+                  </div>
+                  {{#if queueDirtyFilelds.maximum_am_resource_percent}}
+                    <div class="btn-group btn-group-xs" >
+                      <a {{action 'rollbackProp' 'maximum_am_resource_percent' content}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+                    </div>
+                  {{/if}}
+                </div>
+                {{else}}
+                <div class="col-xs-6">
+                  {{#if content.maximum_am_resource_percent}}
+                    <p class="form-control-static">{{content.maximum_am_resource_percent}} %</p>
+                  {{else}}
+                    <p class="form-control-static">继承</p>
+                  {{/if}}
+                </div>
+                {{/if}}
+            </div>
+            <div class="form-group">
+                {{tooltip-label
+                  class="col-xs-6 control-label"
+                  label='调度方法'
+                  message='本队列的用户应用程序调度方法. <br/> FIFO: 应用程序获得相应的容量根据提交的顺序. <br/> Fair: 应用程序将得到公平的分享容量,没有顺序.'}}
+                {{#if isOperator}}
+                <div class="col-xs-6 control-value input-percent-wrap">
+                  <div>
+                    {{view Ember.Select class="form-control input-sm" content=orderingPolicyValues value=currentOP }}
+                  </div>
+                  {{#if queueDirtyFilelds.ordering_policy}}
+                    <div class="btn-group btn-group-xs" >
+                      <a {{action 'rollbackProp' 'ordering_policy' content}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+                    </div>
+                  {{/if}}
+                </div>
+                {{else}}
+                <div class="col-xs-6">
+                    <p class="form-control-static">{{content.ordering_policy}}</p>
+                </div>
+                {{/if}}
+            </div>
+            {{#if isFairOP}}
+              <div class="form-group">
+                {{tooltip-label
+                  class="col-xs-6 control-label"
+                  label='启用大应用优先'
+                  message='
+如果属实,那么公平排序策略将使用一个应用程序的资源需求为办法容量分配优先级 - 较大的应用程序将获得更高的优先级'
+                }}
+                  {{#if isOperator}}
+                  <div class="col-xs-6 control-value input-percent-wrap">
+                    <div>
+                      <div class="btn-group btn-group-sm pull-right">
+                        <a href="#" {{action 'toggleProperty' 'enable_size_based_weight' this}} class="btn btn-default labels-enabler">
+                          <i {{bind-attr class=":fa enable_size_based_weight:fa-check-square-o:fa-square-o"}}></i>
+                          {{#if enable_size_based_weight}}
+                            启用
+                          {{else}}
+                            禁用
+                          {{/if}}
+                        </a>
+                      </div>
+                    </div>
+                    {{#if queueDirtyFilelds.enable_size_based_weight}}
+                      <div class="btn-group btn-group-xs" >
+                        <a {{action 'rollbackProp' 'enable_size_based_weight' content}} href="#" class="btn btn-default btn-warning"><i class="fa fa-undo"></i></a>
+                      </div>
+                    {{/if}}
+                  </div>
+                  {{else}}
+                  <div class="col-xs-6">
+                    <p class="form-control-static">
+                    {{#if enable_size_based_weight}}
+                      启用
+                    {{else}}
+                      禁用
+                    {{/if}}
+                    </p>
+                  </div>
+                  {{/if}}
+              </div>
+            {{/if}}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

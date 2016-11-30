@@ -1,0 +1,21 @@
+<table class="table advanced-header-table table-bordered table-striped" id="persons-table"><!---->
+    <thead>
+    {{#view view.sortView classNames="label-row" contentBinding="view.filteredContent"}}<!--表头-->
+    <th class="first"> </th>
+    {{view view.parentView.nameSort}}
+    {{view view.parentView.sexSort}}
+    {{view view.parentView.ageSort}}
+    {{view view.parentView.postSort}}
+    {{/view}}
+
+    <tr class="filter-row"><!--过滤行-->
+        <th class="first"><div class="ember-view view-wrapper">{{view Ember.Checkbox checkedBinding="view.selectAllPerson"}}</div></th>
+        <th>{{view view.nameFilterView}}</th>
+        <th>{{view view.sexFilterView}}</th>
+        <th>{{view view.ageFilterView}}</th>
+        <th>{{view view.postFilterView}}</th>
+    </tr>
+    </thead>
+</table>
+
+<a href="#" {{action getData target="this"}} >getAjaxData</a>

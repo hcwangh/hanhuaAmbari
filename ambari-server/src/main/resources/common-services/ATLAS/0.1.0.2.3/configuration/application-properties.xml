@@ -1,0 +1,144 @@
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<configuration supports_final="false">
+  <property>
+    <name>atlas.graph.storage.backend</name>
+    <value>berkeleyje</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.graph.storage.directory</name>
+    <value>/var/lib/atlas/data/berkeley</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.graph.index.search.backend</name>
+    <value>elasticsearch</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.graph.index.search.directory</name>
+    <value>/var/lib/atlas/data/es</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.graph.index.search.elasticsearch.client-only</name>
+    <value>false</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.graph.index.search.elasticsearch.local-mode</name>
+    <value>true</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.lineage.hive.table.type.name</name>
+    <value>DataSet</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.lineage.hive.table.schema.query.hive_table</name>
+    <value>hive_table where name='%s'\, columns</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.lineage.hive.table.schema.query.Table</name>
+    <value>Table where name='%s'\, columns</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.lineage.hive.process.type.name</name>
+    <value>Process</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.lineage.hive.process.inputs.name</name>
+    <value>inputs</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.lineage.hive.process.outputs.name</name>
+    <value>outputs</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.enableTLS</name>
+    <value>false</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.authentication.method</name>
+    <value>simple</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.authentication.principal</name>
+    <value>atlas</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.authentication.keytab</name>
+    <value>/etc/security/keytabs/atlas.service.keytab</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.server.bind.address</name>
+    <value>localhost</value>
+    <property-type>DONT_ADD_ON_UPGRADE</property-type>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.http.authentication.enabled</name>
+    <value>false</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.http.authentication.type</name>
+    <value>simple</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.http.authentication.kerberos.principal</name>
+    <value>HTTP/_HOST@EXAMPLE.COM</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.http.authentication.kerberos.keytab</name>
+    <value>/etc/security/keytabs/spnego.service.keytab</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.http.authentication.kerberos.name.rules</name>
+    <value>DEFAULT</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.server.http.port</name>
+    <value>21000</value>
+    <description></description>
+  </property>
+  <property>
+    <name>atlas.server.https.port</name>
+    <value>21443</value>
+    <description></description>
+  </property>
+
+</configuration>

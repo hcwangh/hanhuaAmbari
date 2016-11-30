@@ -1,0 +1,18 @@
+.flexigrid div.fbutton .magnifier
+{
+    background: url(flexigrid/images/magnifier.png) no-repeat center left;
+}
+.flexigrid div.fbutton .serverAdd
+{
+    background: url(flexigrid/images/serverAdd.png) no-repeat center left;
+}
+.flexigrid div.fbutton .typeAdd{
+    background: url(flexigrid/images/serverAdd.png) no-repeat center left;
+}
+.flexigrid div.fbutton .typeChange{
+    background: url(flexigrid/images/modify.png) no-repeat center left;
+}
+.flexigrid div.fbutton .delete
+{
+    background: url(flexigrid/images/delete.png) no-repeat center left;
+}

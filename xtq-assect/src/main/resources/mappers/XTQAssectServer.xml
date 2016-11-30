@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjhc.hcdream.dao.XTQAssectDao">
+
+    <update id="updateHardAssectEntity" parameterType="HardAssectEntity">
+        update hard_assect_entity
+        <set>
+            <if test="entity_info1!=null">
+                entity_info1 = #{entity_info1},
+            </if>
+            <if test="entity_info2!=null">
+                entity_info2 = #{entity_info2},
+            </if>
+            <if test="entity_info3!=null">
+                entity_info3 = #{entity_info3},
+            </if>
+            <if test="type_id != null">
+                type_id = #{type_id}
+            </if>
+        </set>
+        where entity_id = #{entity_id};
+    </update>
+
+    <update id="updateServer" parameterType="HardAssectServers">
+        update hard_assect_servers
+        <set>
+            <if test="host_ip!=null">
+                host_ip = #{host_ip},
+            </if>
+            <if test="host_name!=null">
+                host_name = #{host_name},
+            </if>
+            <if test="machine_entity_id!=null">
+                machine_entity_id = #{machine_entity_id},
+            </if>
+            <if test="principal_info!=null">
+                principal_info = #{principal_info}
+            </if>
+        </set>
+        where host_id = #{host_id};
+    </update>
+
+    <update id="updateMachineEty" parameterType="HardAssectMachineEntity">
+        update hard_assect_machine_entity
+        <set>
+            <if test="belong_info1!=null">
+                belong_info1 = #{belong_info1},
+            </if>
+            <if test="entity_on_time!=null">
+                entity_on_time = #{entity_on_time}
+            </if>
+        </set>
+        where machine_entity_id = #{machine_entity_id} and  entity_id= #{entity_id};
+    </update>
+
+
+
+    <update id="updateHardAssectType" parameterType="HardAssectType">
+        update hard_assect_type
+        <set>
+            <if test="type_name!=null">
+                type_name = #{type_name},
+            </if>
+            <if test="category_id!=null">
+                category_id = #{category_id},
+            </if>
+            <if test="type_brand!=null">
+                type_brand = #{type_brand},
+            </if>
+            <if test="type_version!=null">
+                type_version = #{type_version},
+            </if>
+            <if test="type_info1!=null">
+                type_info1 = #{type_info1},
+            </if>
+            <if test="type_info2!=null">
+                type_info2 = #{type_info2},
+            </if>
+            <if test="type_info3!=null">
+                type_info3 = #{type_info3},
+            </if>
+            <if test="type_info3!=null">
+                type_info4 = #{type_info4},
+            </if>
+            <if test="type_info3!=null">
+                type_info5 = #{type_info5},
+            </if>
+            <if test="reference_price!=null">
+                reference_price = #{reference_price}
+            </if>
+
+        </set>
+        where type_id = #{type_id};
+    </update>
+</mapper>
+
+

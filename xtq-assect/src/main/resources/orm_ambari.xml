@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="sys.properties"></properties>
+    <!--SQL映射: 实体类 配置 别名与规则文件内容(类型)对应-->
+    <typeAliases>
+        <package name="com.zjhc.hcdream.model"/>
+        <!--<typeAlias alias="XTQAmbariServer" type="com.zjhc.hcdream.model.XTQAmbariServer"/>-->
+    </typeAliases>
+    <!--JDBC配置-->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${ambari.jdbc.driver}"/>
+                <property name="url" value="${ambari.jdbc.url}}" />
+                <property name="username" value="${ambari.jdbc.username}"/>
+                <property name="password" value="${ambari.jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--映射规则文件-->
+    <mappers>
+        <mapper resource="mappers/XTQAssectServer.xml"/>
+        <!--<package name="com.zjhc.hcdream.dao"/>-->
+    </mappers>
+
+</configuration>

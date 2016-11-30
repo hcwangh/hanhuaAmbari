@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel=stylesheet type=text/css href="styles/daohang.css">
+<!--<link rel=stylesheet type=text/css href="styles/main.css">-->
+<script type=text/javascript src="scripts/jquery.min.js"></script>
+</head>
+<body>
+<!-- 代码 开始 -->
+ <div id="firstpane" class="menu_list">
+     <!--菜单头-->
+    <div style="width: 140px;height:8px;background-color: #f5f5f5;"></div>
+    <!--<p class="menu_head" id="firstFrame" >资产管理</p>-->
+         <div class=menu_body >
+            <a href="views/servers.jsp"  id ='defaultFrame'  class="pointer" target="mainFrame">主机管理</a>
+            <a href="views/category_type_manager.jsp"  class="pointer" target="mainFrame">分类管理</a>
+            <a href="views/extend.jsp"   class="pointer" target="mainFrame">扩容查询</a>
+            <a href="views/historyBrokenList.jsp"   class="pointer" target="mainFrame">下架详情</a>
+            <a href="views/historyBrokenStat.jsp"   class="pointer" target="mainFrame">下架统计</a>
+            <!--<a href="views/server_ctr_tp.jsp"  class="pointer" target="mainFrame">分类管理</a>-->
+            <!--<a href="http://localhost:8080/ast?action=test"  class="pointer" target="mainFrame">组合类型</a>-->
+         </div>
+</div>
+<script type=text/javascript>
+$(document).ready(function(){
+    /*$.ajax({
+        url:  'http://10.80.12.54:8080/api/v1/users/humidy',
+        type: 'post', dataType: 'text', cache: false, async: false,
+        data: 'fields=privileges/PrivilegeInfo/cluster_name,privileges/PrivilegeInfo/permission_name',
+        success: function (data) {
+            alert(data);
+        },
+        error: function (data) {
+
+        }
+    });*/
+
+    $("#firstpane .menu_body:eq(0)").show();
+	$("#firstpane p.menu_head").click(function(){
+		$(this).addClass("current").next("div.menu_body").slideToggle(300).siblings("div.menu_body").slideUp("fast");
+		$(this).siblings().removeClass("current");
+	});
+	$("#secondpane .menu_body:eq(0)").show();
+	$("#secondpane p.menu_head").mouseover(function(){
+		$(this).addClass("current").next("div.menu_body").slideDown(500).siblings("div.menu_body").slideUp("fast");
+		$(this).siblings().removeClass("current");
+	});
+	$('.pointer').click(function(){
+        $('.pointer').attr('style','none');
+//        $(this).attr('style','background: url("img/icon.png") no-repeat  20px center;background-color: #ececec;');
+        $(this).attr('style','color:white;background-color: #666666;');
+    });
+    /*  var firstFrame = document.getElementById("firstFrame");
+      firstFrame.click();
+      firstFrame.click();*/
+      var defaultFrame = document.getElementById("defaultFrame");
+      defaultFrame.click();
+});
+</script>
+</body>
+</html>

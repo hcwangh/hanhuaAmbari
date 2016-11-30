@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjhc.hcdream.dao.SequenceDao">
+        <!--<resultMap type="string" id="resultId">
+                        <result column="id" property="id" />
+        </resultMap>
+        <select id="nextSeq_category_id"  resultMap="resultId">
+                select nextval('req_category_id') as id;
+        </select>
+        <select id="nextSeq_type_id"  resultMap="resultId">
+                select nextval('req_type_id') as id;
+        </select>
+        <select id="nextSeq_combined_id"  resultMap="resultId">
+                select nextval('req_combined_id') as id;
+        </select>
+        <select id="nextSeq_combined_type_id"  resultMap="resultId">
+                select nextval('req_combined_type_id') as id;
+        </select>
+        <select id="nextSeq_belong_id"  resultMap="resultId">
+                select nextval('req_belong_id') as id;
+        </select>
+        <select id="nextSeq_host_id"  resultMap="resultId">
+                select nextval('req_host_id') as id;
+        </select>
+        <select id="nextSeq_mhost_id"  resultMap="resultId">
+                select nextval('req_mhost_id') as id;
+        </select>-->
+</mapper>

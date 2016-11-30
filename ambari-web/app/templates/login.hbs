@@ -1,0 +1,55 @@
+{{!
+* Licensed to the Apache Software Foundation (ASF) under one
+* or more contributor license agreements.  See the NOTICE file
+* distributed with this work for additional information
+* regarding copyright ownership.  The ASF licenses this file
+* to you under the Apache License, Version 2.0 (the
+* "License"); you may not use this file except in compliance
+* with the License.  You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+}}
+<style>
+
+</style>
+{{#unless isServerClientVersionMismatch}}
+    <!--<div style="background-image:url('/img/bg.jpg');background-position:center 0;background-repeat:no-repeat;background-color:#dee2e5;height:1000px;margin-left: -2.5%;margin-bottom:-150px;margin-top:-15px; overflow: hidden;" >-->
+    <div style="position: absolute;width: 100%;height: 76%;background: url('/img/login/baner_new.png');background-size: 100% 100%;margin-left: -2.5%;margin-top: 1.5%" >
+
+
+
+        <div style="position: absolute;display: block;border-radius: 5px;width: 390px;height: 260px;background: #ffffff;text-align: center;top: 25%;right: 10%;font-family:'微软雅黑';">
+            <h3 style="font-size: 24px;margin: 16px 0 6px;font-weight: normal;font-family:'微软雅黑';text-align: center;color: #25acfd;">哮天犬</h3>
+            <p style="margin-top:-12px!important;font-family:'微软雅黑';text-align: center;color: #aaaaaa;display: block;-webkit-margin-before: 1em;-webkit-margin-after: 1em;-webkit-margin-start: 0px;-webkit-margin-end: 0px;">大数据运维管理监控平台</p>
+            <!--<div class="login_title" style="color: #999;font-size:12px;font-family: 宋体"><strong style="font-size: 14px;font-weight: bold;color: #000;">登录</strong> 请输入用户名和密码</div>-->
+
+            <div style=";font-size: 13px;margin-top: 14px;margin-left: 80px; border: 1px solid #cccccc;width: 206px;height: 36px;line-height: 36px;">{{view view.loginTextField valueBinding="loginName" class="spanlogin" disabledBinding="isSubmitDisabled"}}<img src="/img/user.png" style="margin-left: -180px;margin-top: -85px"></div>
+            <div style=";font-size: 13px;margin-top: 14px;margin-left: 80px; border: 1px solid #cccccc;width: 206px;height: 36px;line-height: 36px;">{{view view.passTextField type="password" valueBinding="password" class="spanlogin" disabledBinding="isSubmitD-->isabled"}}<img src="/img/password.png" style="margin-left: -180px;margin-top: -85px"></div>
+        <!--<div  style="width: 255px!important;height: 39px;margin-left: 57px;line-height: 39px;font-size: 13px;margin-top: 15px;padding: 0 4px 0 4px;background:url('/img/password.png');background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">{{view view.passTextField type="password" valueBinding="password" class="spanlogin" disabledBinding="isSubmitD&ndash;&gt;isabled"}}</div>-->
+        <!--<button  style="margin-top:26px;background-image:url('/img/login-btn.png');border:none;background-repeat:no-repeat;height: 47px;width: 320px;background-color:transparent;"-->
+            <!--{{bindAttr disabled="isSubmitDisabled"}}-->
+            <!--{{action "submit" target="controller"}}>-->
+        <!--</button>-->
+            <button class="btn btn-success login-btn" style="line-height:26px!important;;margin-left:10px;width: 245px!important;margin-top: 10px" {{bindAttr disabled="isSubmitDisabled"}} {{action "submit" target="controller"}}>立即登录</button>
+            {{#if errorMessage}}
+                <!--<div class="alert alert-error">-->
+                <!--{{errorMessage}}-->
+                <!--</div>-->
+                <div style="color: rgb(178, 29, 26); text-align: center;font-size: 12px;margin-top: -7px;">用户名或密码错误</div>
+            {{/if}}
+        </div>
+    <div style=";position: absolute;left:0px;bottom:0px;height:1%;width:100%;">
+        <div style="text-align: center;color: #999;font-size: 12px;padding-top: 26px; line-height: 20px;">杭州市政府运维管理平台<br>
+            版权所有 CopyRight © 2016</div>
+        <!--<div style="float: right; margin-right: 12px;"><img  style="max-width:100%" src="/img/team_logo.png"/> </div>-->
+        <!--<a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Licensed under the Apache License, Version 2.0</a>.<br>
+        <a href="/licenses/NOTICE.txt" target="_blank">See third-party tools/resources that Ambari uses and their respective authors</a>-->
+    </div>
+
+{{/unless}}

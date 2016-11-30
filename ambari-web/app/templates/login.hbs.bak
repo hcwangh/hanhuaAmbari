@@ -1,0 +1,17 @@
+{{#unless isServerClientVersionMismatch}}
+    <div class="banner" style="width: 100%;background: url('/img/bg.jpg');background-size: 100% 100%;height: 76%;">
+<div class="well login span4" >
+    <h2>{{t login.header}}</h2>
+    {{#if errorMessage}}
+        <div class="alert alert-error">
+            {{errorMessage}}
+        </div>
+    {{/if}}
+
+    {{view view.loginTextField valueBinding="loginName" class="span4" disabledBinding="isSubmitDisabled"}}
+
+    {{view view.passTextField type="password" valueBinding="password" class="span4" disabledBinding="isSubmitDisabled"}}
+    <button class="btn btn-success login-btn" {{bindAttr disabled="isSubmitDisabled"}} {{action "submit" target="controller"}}>{{t login.loginButton}}</button>
+</div>
+    </div>
+{{/unless}}
